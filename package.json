@@ -1,6 +1,6 @@
 {
   "name": "@atakama/cover-diff",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "coverage reporter and enforcer for diffs only",
   "main": "cover-diff.js",
   "bin": {
