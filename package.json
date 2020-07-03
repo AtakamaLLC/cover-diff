@@ -1,6 +1,6 @@
 {
   "name": "@atakama/cover-diff",
-  "version": "0.1.0",
+  "version": "1.0.1",
   "description": "coverage reporter and enforcer for diffs only",
   "main": "cover-diff.js",
   "bin": {
@@ -11,10 +11,10 @@
     "test": "NODE_PATH=. node test.js",
     "coverage": "nyc --reporter lcov --reporter text-summary yarn test"
   },
-  "cover-diff": {
-    "lines": 95,
-    "branches": 90
-  },
+  "files": [
+      "*.md",
+      "*.js"
+  ],
   "nyc": {
       "check-coverage": true,
       "lines": 80,
@@ -46,7 +46,7 @@
     "eslint": "^7.3.1"
   },
   "@atakama/cover-diff": {
-    "lines": 80,
-    "branches": 80
+    "lines": 95,
+    "branches": 90
   }
 }
