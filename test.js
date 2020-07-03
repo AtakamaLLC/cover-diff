@@ -11,7 +11,7 @@ test.before = (ctx) => {
 test('opts', async (ctx) => {
     const opts = await ctx.cd.getOpts()
     ctx.log("opts:", opts)
-    assert.equal(opts.lines, 80)
+    assert.equal(opts.lines, 95)
     assert.ok(opts.lcovFile)
 })
 
