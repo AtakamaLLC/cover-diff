@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - 10
+
+script:
+  - node_modules/.bin/eslint cove-diffs.js
+  - node_modules/.bin/nyc --reporter lcov --reporter text-summary npm test
+  - codecov
+
+install:
+  - npm i -g codecov

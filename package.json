@@ -1,0 +1,26 @@
+{
+  "name": "@atakama/cover-diff",
+  "version": "0.1.0",
+  "description": "coverage reporter and enforcer for diffs only",
+  "main": "cover-diff.js",
+  "scripts": {
+    "test": "NODE_PATH=. node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AtakamaLLC/cover-diffs.git"
+  },
+  "keywords": [
+    "coverage",
+    "diffs",
+    "diff"
+  ],
+  "author": "Erik Aronesty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AtakamaLLC/cover-diffs/issues"
+  },
+  "homepage": "https://github.com/AtakamaLLC/cover-diffs#readme",
+  "dependencies": {},
+  "devDependencies": {}
+}
