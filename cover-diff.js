@@ -1,4 +1,3 @@
-const path = require('path')
 const fs = require('fs')
 const util = require('util')
 const findUp = require('find-up');
@@ -36,7 +35,7 @@ class Main {
             const lcov = await this.getLcov(opts)
             const newCov = this.trimLcov(diffs, lcov)
             const outF = this.toLcov(newCov)
-            process.stdout.write(newCov)
+            process.stdout.write(outF)
         } catch (e) {
             console.error("# error:", e)
         }

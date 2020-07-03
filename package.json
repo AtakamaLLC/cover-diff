@@ -7,7 +7,18 @@
     "cover-diff": "./cli.js"
   },
   "scripts": {
-    "test": "NODE_PATH=. node test.js"
+    "lint": "eslint *.js",
+    "test": "NODE_PATH=. node test.js",
+    "coverage": "nyc --reporter lcov --reporter text-summary yarn test"
+  },
+  "cover-diff": {
+    "lines": 95,
+    "branches": 90
+  },
+  "nyc": {
+      "check-coverage": true,
+      "lines": 80,
+      "branches": 70
   },
   "repository": {
     "type": "git",

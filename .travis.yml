@@ -4,8 +4,8 @@ node_js:
   - 12
 
 script:
-  - node_modules/.bin/eslint cov-diffs.js
-  - nyc --reporter lcov --reporter text-summary npm test
+  - yarn lint
+  - yarn coverage
   - codecov
 
 install:

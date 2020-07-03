@@ -46,4 +46,24 @@ test('out', async (ctx) => {
     assert.equal(out, expect)
 })
 
+var cli = test.scope(null, {parallel: false})
+
+cli.beforeAll = () => {
+    process.chdir("./test-data")
+}
+
+cli.afterAll = () => {
+    process.chdir("..")
+}
+
+cli('basic', async () => {
+    const cp = require('child_process');
+    const diffs = await util.promisify(fs.readFile)("./diffs", "utf-8")
+    const out = cp.execFileSync(process.execPath, ['../cli.js'], {
+        input: diffs 
+    })
+    const expect = await util.promisify(fs.readFile)("./expected", "utf-8")
+    assert.equal(out, expect)
+})
+
 test.run()

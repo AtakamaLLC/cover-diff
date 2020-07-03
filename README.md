@@ -16,7 +16,8 @@ npm install @atakama/cover-diff
 ### Use:
 
 ```bash
-git diff origin/master | cover-diff
+git diff origin/master | cover-diff > diff-cover.lcov
+genhtml diff-cover.lcov -o diff-cover
 ```
 
 ### Options:
@@ -25,6 +26,8 @@ git diff origin/master | cover-diff
 "cover-diff" : {
     "lines" : 80,
     "branches" : 70,
+    "lcovFile" : "coverage/lcov.info",
+    "diffFile" : \<stdin\>,
 }
 ```
 
