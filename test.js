@@ -1,19 +1,49 @@
-const test = require('qtest')
+const test = require('@atakama/qtest')
 const assert = test.assert
+const coverDiff = require('./cover-diff')
+const fs = require('fs')
+const util = require('util')
 
-test('basic', async (ctx) => {
-  const my = test.runner()
+test.before = (ctx) => {
+    ctx.cd = new coverDiff()
+}
 
-  my.add('t1', async (ctx) => {
-    ctx.log('loggy', 'log')
-    assert.equal(1, 1)
-  })
-
-  let results = await my.run()
-
-  ctx.log(JSON.stringify(results))
-
-  assert.equal(results.passed, 1)
-  assert.equal(results.tests.t1.ok, true)
-  assert.equal(results.tests.t1.log[0][1], 'loggy')
+test('opts', async (ctx) => {
+    const opts = await ctx.cd.getOpts()
+    ctx.log("opts:", opts)
+    assert.equal(opts.lines, 80)
+    assert.ok(opts.lcovFile)
 })
+
+test('diff', async (ctx) => {
+    const diff = await ctx.cd.getDiff({diffFile: "./test-data/diffs"})
+    ctx.log("diff:", diff[0])
+    assert.equal(diff[0].to, ".eslintrc")
+})
+
+test('lcov', async (ctx) => {
+    const lcov = await ctx.cd.getLcov({lcovFile: "./test-data/coverage/lcov.info"})
+    ctx.log("lcov:", lcov[0])
+    assert.equal(lcov[0].lines.details.length, 11)
+    assert.equal(lcov[0].file, "lib/Constants.js")
+})
+
+test('trim', async (ctx) => {
+    const diff = await ctx.cd.getDiff({diffFile: "./test-data/diffs"})
+    const lcov = await ctx.cd.getLcov({lcovFile: "./test-data/coverage/lcov.info"})
+    const trim = await ctx.cd.trimLcov(diff, lcov)
+    ctx.log("trim:", trim)
+    assert.equal(trim[0].lines.details.length, 1)
+    assert.equal(lcov[0].file, "lib/Constants.js")
+})
+
+test('out', async (ctx) => {
+    const diff = await ctx.cd.getDiff({diffFile: "./test-data/diffs"})
+    const lcov = await ctx.cd.getLcov({lcovFile: "./test-data/coverage/lcov.info"})
+    const trim = await ctx.cd.trimLcov(diff, lcov)
+    const out = await ctx.cd.toLcov(trim)
+    const expect = await util.promisify(fs.readFile)("./test-data/expected", "utf-8")
+    assert.equal(out, expect)
+})
+
+test.run()

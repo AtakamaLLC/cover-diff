@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.com/AtakamaLLC/cover-diffs.svg?branch=master)](https://travis-ci.com/AtakamaLLC/cover-diffs)
-[![codecov](https://codecov.io/gh/AtakamaLLC/cover-diffs/branch/master/graph/badge.svg)](https://codecov.io/gh/AtakamaLLC/cover-diffs)
+[![Build Status](https://travis-ci.com/AtakamaLLC/cover-diff.svg?branch=master)](https://travis-ci.com/AtakamaLLC/cover-diff)
+[![codecov](https://codecov.io/gh/AtakamaLLC/cover-diff/branch/master/graph/badge.svg)](https://codecov.io/gh/AtakamaLLC/cover-diff)
 
-# cover-diffs
+# cover-diff
 
 Report & enforce diff coverage on diffs only.
 
@@ -9,20 +9,20 @@ Report & enforce diff coverage on diffs only.
 ### Install:
 
 ```
-npm install @atakama/cover-diffs
+npm install @atakama/cover-diff
 ```
 
 
 ### Use:
 
 ```bash
-git diff origin/master | cover-diffs
+git diff origin/master | cover-diff
 ```
 
 ### Options:
 
 ```bash
-"cover-diffs" : {
+"cover-diff" : {
     "lines" : 80,
     "branches" : 70,
 }

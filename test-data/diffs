@@ -1,0 +1,168 @@
+diff --git a/.eslintrc b/.eslintrc
+index 31eff3d..79dc8cd 100644
+--- a/.eslintrc
++++ b/.eslintrc
+@@ -18 +18 @@
+-        "files": [ "tests/*.js" ],
++        "files": [ "__tests__/*.js" ],
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index b143d9e..83df435 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -5,4 +5,4 @@ stages:
+-include:
+-  - project: 'vidaid/Build-Tools'
+-    ref: master
+-    file: sonarscan.yml
++# include:
++#  - project: 'vidaid/Build-Tools'
++#    ref: master
++#    file: sonarscan.yml
+@@ -29 +29 @@ test:ubuntu:
+-      - "diff.report"
++      - "diff-report.html"
+diff --git a/__tests__/KeyManager-test.js b/__tests__/KeyManager-test.js
+index 56bf771..514ea6e 100644
+--- a/__tests__/KeyManager-test.js
++++ b/__tests__/KeyManager-test.js
+@@ -5 +4,0 @@ import KeyManager from '../lib/KeyManager'
+-import { Utilities } from '../lib/Utilities'
+diff --git a/coverage.sh b/coverage.sh
+index 5fc4d78..89322c6 100755
+--- a/coverage.sh
++++ b/coverage.sh
+@@ -4,4 +4,3 @@ merge_base=$(git merge-base HEAD "origin/${CI_MERGE_REQUEST_TARGET_BRANCH_NAME:-
+-git diff -U0 --no-renames > my.diff
+-npm i --no-save coverage-on-diff
+-node_modules/.bin/coverageOnDiff -d my.diff -r text -s 90 -b 80 > diff.report
+-cat diff.report
++npm i --no-save @connectis/diff-test-coverage
++git diff -U0 --no-renames "${merge_base}" | node_modules/.bin/diff-test-coverage  -c coverage/cobertura-coverage.xml -l 90 -b 80 > diff-report.html
++cat diff-report.html
+diff --git a/lib/Constants.js b/lib/Constants.js
+index 35ff969..8fd9883 100644
+--- a/lib/Constants.js
++++ b/lib/Constants.js
+@@ -2 +2 @@ if (typeof(__DEV__) == "undefined")
+-    var __DEV__ = process.release.name == 'node'
++    var __DEV__ = process.release.name == 'node'    // eslint-disable-line no-undef
+diff --git a/lib/KeyManager.js b/lib/KeyManager.js
+index 927f5a2..29177d5 100644
+--- a/lib/KeyManager.js
++++ b/lib/KeyManager.js
+@@ -2 +2 @@
+-import { FakeVidaKey, VidaKey, VidaWords } from 'CryptVFS-Message'
++import { FakeVidaKey, VidaKey } from 'CryptVFS-Message'
+diff --git a/lib/Logger.js b/lib/Logger.js
+index 3cf34fb..c67151f 100644
+--- a/lib/Logger.js
++++ b/lib/Logger.js
+@@ -62 +62 @@ export class Logger {
+-    static trace() {
++    static trace(...args) {
+@@ -64 +64 @@ export class Logger {
+-            console.trace()
++            console.trace(...args)
+diff --git a/lib/Messenger.js b/lib/Messenger.js
+index 96a85d1..2e1a4b0 100644
+--- a/lib/Messenger.js
++++ b/lib/Messenger.js
+@@ -17 +16,0 @@ const DUPER_MAX_ENTRIES = 1000
+-const UNHIBERNATE_THRESHOLD_DAYS = 10
+@@ -260 +259 @@ class MessengerClass {
+-    async inboundMessageLoop(id) {
++    async inboundMessageLoop() {
+@@ -1130 +1129,2 @@ export class DeviceQueue {
+-        } catch {
++        } catch (e) {
++            Logger.l("error during device stop:", e)
+diff --git a/lib/Utilities.js b/lib/Utilities.js
+index 38164c8..646c943 100644
+--- a/lib/Utilities.js
++++ b/lib/Utilities.js
+@@ -12,2 +12 @@ var uuid = require('react-native-uuid');
+-var crypto = null
+-if (typeof(navigator) == 'undefined') {
++if (typeof(navigator) == 'undefined')
+@@ -15 +14,3 @@ if (typeof(navigator) == 'undefined') {
+-}
++
++if (typeof(process) == 'undefined')
++    var process = null
+@@ -28,0 +30,2 @@ export class Utilities {
++    /* eslint-disable no-unused-vars */
++
+@@ -126 +129 @@ export class Utilities {
+-        } else if (process.env.USE_WEBKATA) {
++        } else if (process && process.env.USE_WEBKATA) {
+diff --git a/package.json b/package.json
+index dd8adb8..5571c36 100644
+--- a/package.json
++++ b/package.json
+@@ -7 +7 @@
+-    "lint": "eslint .",
++    "lint": "eslint lib",
+@@ -10 +10 @@
+-    "coverage": "nyc --reporter json --reporter text-summary npm run test"
++    "coverage": "nyc --reporter lcov --reporter json --reporter text-summary npm run test"
+@@ -22 +22,4 @@
+-    "lines": 50
++    "check-coverage": true,
++    "lines": 70,
++    "statements": 70,
++    "branches": 60
+@@ -37 +40 @@
+-    "@atakama/qtest": "^1.5.1",
++    "@atakama/qtest": "^1.6.0",
+@@ -43,0 +47 @@
++    "babel-eslint": "^10.1.0",
+diff --git a/test.sh b/test.sh
+index ddea308..cc0e4a0 100755
+--- a/test.sh
++++ b/test.sh
+@@ -2,0 +3 @@ yarn
++yarn lint
+@@ -4 +5 @@ yarn add nodekata
+-npm run coverage
++yarn coverage
+diff --git a/yarn.lock b/yarn.lock
+index d95a79a..87c373f 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -5,4 +5,4 @@
+-"@atakama/qtest@^1.5.1":
+-  version "1.5.1"
+-  resolved "https://registry.npmjs.org/@atakama/qtest/-/qtest-1.5.1.tgz#58e29c69d194b9146b720b08314dd7be4230d79d"
+-  integrity sha512-Abua80mqG2S5I6gXjBcnIGRCN2LI2VPLP+cjtT3r6ddV/TVsrSP8xen1cylvrwmG3bulngRYbSdLYOawURQqHQ==
++"@atakama/qtest@^1.6.0":
++  version "1.6.0"
++  resolved "https://registry.npmjs.org/@atakama/qtest/-/qtest-1.6.0.tgz#37538f47a3a5b01fd3350e92d0de6b3bd588781b"
++  integrity sha512-esVD8tMVpamYSuX5Txfa2cnfbrWkx20Mjb1d+u2auyDXelpGwSRBUgs6v1aQQrDE1FaN0ZrmPhPzn2PCkETErg==
+@@ -194 +194 @@
+-"@babel/parser@^7.10.4":
++"@babel/parser@^7.10.4", "@babel/parser@^7.7.0":
+@@ -237 +237 @@
+-"@babel/traverse@^7.10.4":
++"@babel/traverse@^7.10.4", "@babel/traverse@^7.7.0":
+@@ -252 +252 @@
+-"@babel/types@^7.10.4":
++"@babel/types@^7.10.4", "@babel/types@^7.7.0":
+@@ -517,0 +518,12 @@ aws4@^1.8.0:
++babel-eslint@^10.1.0:
++  version "10.1.0"
++  resolved "https://artifacts.vidaprivacy.io/repository/AtakamaGNPM/babel-eslint/-/babel-eslint-10.1.0.tgz#6968e568a910b78fb3779cdd8b6ac2f479943232"
++  integrity sha512-ifWaTHQ0ce+448CYop8AdrQiBsGrnC+bMgfyKFdi6EsPLTAWG+QfyDeM6OH+FmWnKvEq5NnBMLvlBUPKQZoDSg==
++  dependencies:
++    "@babel/code-frame" "^7.0.0"
++    "@babel/parser" "^7.7.0"
++    "@babel/traverse" "^7.7.0"
++    "@babel/types" "^7.7.0"
++    eslint-visitor-keys "^1.0.0"
++    resolve "^1.12.0"
++
+@@ -1054 +1066 @@ eslint-utils@^1.4.3:
+-eslint-visitor-keys@^1.1.0:
++eslint-visitor-keys@^1.0.0, eslint-visitor-keys@^1.1.0:
+@@ -2689 +2701 @@ resolve-url@^0.2.1:
+-resolve@^1.13.1, resolve@^1.3.2:
++resolve@^1.12.0, resolve@^1.13.1, resolve@^1.3.2:

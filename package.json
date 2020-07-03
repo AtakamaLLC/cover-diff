@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "description": "coverage reporter and enforcer for diffs only",
   "main": "cover-diff.js",
+  "bin": {
+    "cover-diff": "./cli.js"
+  },
   "scripts": {
     "test": "NODE_PATH=. node test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AtakamaLLC/cover-diffs.git"
+    "url": "git+https://github.com/AtakamaLLC/cover-diff.git"
   },
   "keywords": [
     "coverage",
@@ -18,9 +21,21 @@
   "author": "Erik Aronesty",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AtakamaLLC/cover-diffs/issues"
+    "url": "https://github.com/AtakamaLLC/cover-diff/issues"
   },
-  "homepage": "https://github.com/AtakamaLLC/cover-diffs#readme",
-  "dependencies": {},
-  "devDependencies": {}
+  "homepage": "https://github.com/AtakamaLLC/cover-diff#readme",
+  "dependencies": {
+    "find-up": "^4.1.0",
+    "get-stdin": "^8.0.0",
+    "lcov-parse": "^1.0.0",
+    "parse-diff": "^0.7.0"
+  },
+  "devDependencies": {
+    "@atakama/qtest": "^1.6.0",
+    "eslint": "^7.3.1"
+  },
+  "@atakama/cover-diff": {
+    "lines": 80,
+    "branches": 80
+  }
 }

@@ -1,11 +1,13 @@
 language: node_js
 node_js:
   - 10
+  - 12
 
 script:
-  - node_modules/.bin/eslint cove-diffs.js
-  - node_modules/.bin/nyc --reporter lcov --reporter text-summary npm test
+  - node_modules/.bin/eslint cov-diffs.js
+  - nyc --reporter lcov --reporter text-summary npm test
   - codecov
 
 install:
   - npm i -g codecov
+  - npm i -g nyc
