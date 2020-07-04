@@ -80,7 +80,7 @@ test('enforce', async(ctx) => {
     assert(process.exitCode == 0)
 })
 
-var cli = test.scope(null, {parallel: false})
+var cli = test.scope("fork", {parallel: false})
 
 cli.beforeAll = () => {
     process.chdir("./test-data")
