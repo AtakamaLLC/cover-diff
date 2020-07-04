@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.1.1]:
+ ### Changed
+   - cli path not necessary 
+
 ## [1.1.0]:
  ### Changed
    - normalize paths for windows

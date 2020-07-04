@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint *.js",
-    "test": "yarn link; yarn link @atakama/cover-diff; node test.js",
+    "test": "node test.js",
     "coverage": "nyc --reporter lcov --reporter text-summary yarn test"
   },
   "files": [
