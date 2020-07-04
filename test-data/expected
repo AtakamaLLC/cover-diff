@@ -7,6 +7,7 @@ BRH:0
 DA:2,1
 FNF:1
 FNH:1
+end_of_record
 TN:
 SF:lib/Logger.js
 FN:62,(anonymous_6)
@@ -16,11 +17,13 @@ FNH:0
 DA:64,0
 FNF:1
 FNH:0
+end_of_record
 TN:
 SF:lib/Messenger.js
 DA:1129,5
 FNF:1
 FNH:1
+end_of_record
 TN:
 SF:lib/Utilities.js
 DA:12,1

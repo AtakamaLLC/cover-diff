@@ -1,8 +1,9 @@
 # Changelog
 
-## [1.1.2]:
- ### Changed
-   - cli path not necessary 
+## [1.1.3]:
+ ### Fixed
+   - reports more than 1 file correctly
+   - cli paths not weird
 
 ## [1.1.0]:
  ### Changed

@@ -147,8 +147,8 @@ class CoverDiff {
             }
             print("FNF:", ent.lines.found)
             print("FNH:", ent.lines.hit)
+            print("end_of_record")
         }
-        print("end_of_record")
         return out
     }
 

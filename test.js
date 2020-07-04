@@ -109,7 +109,7 @@ cli('err', async () => {
         })
         assert.fail()
     } catch (err) {
-        assert.equal(err.stdout, "end_of_record\n")
+        assert.equal(err.stdout, "")
     }
 })
 
