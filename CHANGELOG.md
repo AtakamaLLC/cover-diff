@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0]:
+ ### Changed
+   - normalize paths for windows
+   - enforcement options work
+
 ## [1.0.2]:
  ### Fixed
    - cli runnable

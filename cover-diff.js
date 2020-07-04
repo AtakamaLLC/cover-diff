@@ -5,6 +5,8 @@ const getStdin = require('get-stdin');
 const parseDiff = require('parse-diff');
 const parseLcov = util.promisify(require('lcov-parse'));
 const readFile = util.promisify(fs.readFile);
+const path = require('path');
+
 
 class Diff {
     constructor(chunks) {
@@ -21,23 +23,66 @@ class Diff {
     }
 }
 
-class Main {
+const SECTIONS = ["lines", "branches", "functions"]
+
+class CoverDiff {
     constructor() {
-        this.opts = {}
-        this.defaultOpts = {lcovFile: "coverage/lcov.info", diffFile: null}
+        this.defaultOpts = {lcovFile: "coverage/lcov.info", diffFile: null, fixPathSep: process.platform == "win32"}
+    }
+    
+    normalPath(filePath, opts) {
+        filePath = path.normalize(filePath)
+        if (opts.fixPathSep) {
+            filePath = filePath.replace(/\\/g, '/')
+        }
+        return filePath
+    }
+
+    summarizeCov(lcov) {
+        let summary = SECTIONS.reduce((a,b)=>(a[b]={hit:0, found:0},a),{})
+        for (const ent of lcov) {
+            for (const sec of SECTIONS) {
+                if (ent[sec]) {
+                    summary[sec].hit += ent[sec].hit
+                    summary[sec].found += ent[sec].found
+                }
+            }
+        }
+        return summary
+    }
+
+    checkCov(summ, opts) {
+        for (const sec of SECTIONS) {
+            if (opts[sec] > 0 && summ[sec].found > 0) {
+                const pct = 100 * summ[sec].hit/summ[sec].found
+                const expected = opts[sec]
+                if (pct < expected) {
+                    process.exitCode = 1
+                    if (!opts.quiet) 
+                        console.error("# cover-diff:", sec, pct, "<", expected)
+                }
+            }
+        }
     }
 
     async run() {
         try {
             const opts = await this.getOpts()
-            console.error("# cover-diff", opts)
+            if (!opts.quiet)
+                console.error("# cover-diff:", JSON.stringify(opts))
             const diffs = await this.getDiff(opts)
+            if (!diffs.length) {
+                console.error("# cover-diff: invalid/empty diff")
+                process.exitCode = 1 
+            }
             const lcov = await this.getLcov(opts)
-            const newCov = this.trimLcov(diffs, lcov)
+            const newCov = this.trimLcov(diffs, lcov, opts)
+            const summary = this.summarizeCov(newCov)
+            this.checkCov(summary, opts)
             const outF = this.toLcov(newCov)
             process.stdout.write(outF)
         } catch (e) {
-            console.error("# error:", e)
+            console.error("# cover-diff: ERROR", e)
         }
     }
 
@@ -50,14 +95,11 @@ class Main {
     }
 
     async getDiff(opts) {
-        try {
-            const diff = opts.diffFile ? await readFile(opts.diffFile, {encoding: "utf-8"}) : await getStdin()
-            return await parseDiff(diff)
-        } catch (e) {
-            console.error("#CD: diff parser failed")
-            throw(e)
-        }
+        const diff = opts.diffFile ? await readFile(opts.diffFile, {encoding: "utf-8"}) : await getStdin()
+        const res = await parseDiff(diff)
+        return res
     }
+
     async getLcov(opts) {
         try {
             return await parseLcov(opts.lcovFile)
@@ -67,10 +109,10 @@ class Main {
         }
     }
 
-    diffMap(diffs) {
+    diffMap(diffs, opts) {
         const ret = new Map()
         for (let diff of diffs) {
-            const fname = diff.to
+            const fname = this.normalPath(diff.to, opts)
             ret[fname] = new Diff(diff.chunks)
         }
         return ret
@@ -86,56 +128,51 @@ class Main {
                 print("SF:", ent.file)
             }
             if (ent.functions && ent.functions.details.length) {
-                let hitf = 0
-                let totf = 0
                 for (const ln of ent.functions.details) {
                     print("FN:", ln.line, ",", ln.name)
                     print("FNDA:", ln.hit, ",", ln.name)
-                    if (ln.hit) hitf += 1
-                    totf += 1
                 }
-                print("FNF:", totf)
-                print("FNH:", hitf)
+                print("FNF:", ent.functions.found)
+                print("FNH:", ent.functions.hit)
             }
             if (ent.branches && ent.branches.details.length) {
-                let hitf = 0
-                let totf = 0
                 for (const ln of ent.branches.details) {
                     print("BRDA:", ln.line, ",", ln.block, ",", ln.branch, ",", ln.taken?ln.taken:"-")
-                    if (ln.hit) hitf += 1
-                    totf += 1
                 }
-                print("BRF:", totf)
-                print("BRH:", hitf)
+                print("BRF:", ent.branches.found)
+                print("BRH:", ent.branches.hit)
             }
-            let hitf = 0
-            let totf = 0
             for (const ln of ent.lines.details) {
                 print("DA:", ln.line, ",", ln.hit)
-                if (ln.hit) hitf += 1
-                totf += 1
             }
-            print("FNF:", totf)
-            print("FNH:", hitf)
+            print("FNF:", ent.lines.found)
+            print("FNH:", ent.lines.hit)
         }
         print("end_of_record")
         return out
     }
 
-    trimLcov(diffs, lcov) {
-        const dmap = this.diffMap(diffs)
+    trimLcov(diffs, lcov, opts) {
+        const dmap = this.diffMap(diffs, opts)
         let newCov = []
         for (const ent of lcov) {
-            diffs = dmap[ent.file]
+            diffs = dmap[this.normalPath(ent.file, opts)]
             if (!diffs) continue
             let newDeets
-            for (const section of ["lines", "functions", "branches"]) {
+            for (const section of SECTIONS) {
                 newDeets = []
+                let hits = 0, tots = 0
                 for (const deet of ent[section].details) {
                     if (diffs.isIn(deet.line)) {
                         newDeets.push(deet)
+                        if (deet.hit) {
+                            hits += 1
+                        }
+                        tots += 1
                     }
                 }
+                ent[section].hit = hits
+                ent[section].found = tots
                 ent[section].details = newDeets
             }
             if (ent.lines.details.length) {
@@ -146,4 +183,4 @@ class Main {
     }
 }
 
-module.exports = Main
+module.exports = CoverDiff
