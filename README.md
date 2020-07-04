@@ -22,8 +22,10 @@ genhtml diff-cover.lcov -o diff-cover
 
 ### Options:
 
+Options are located in the package.json:
+
 ```bash
-"cover-diff" : {
+"@atakama/cover-diff" : {
     "lines" : 80,
     "branches" : 70,
     "lcovFile" : "coverage/lcov.info",
