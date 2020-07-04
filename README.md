@@ -20,6 +20,18 @@ git diff origin/master | cover-diff > diff-cover.lcov
 genhtml diff-cover.lcov -o diff-cover
 ```
 
+Note:
+
+If you don't have genhtml, do this:
+
+```
+curl -O https://raw.githubusercontent.com/linux-test-project/lcov/master/bin/genhtml
+chmod +x genhtml
+./genhtml diff-cover.lcov -o diff-cover
+```
+
+That works in most bashifed environments (including Windows under git bash).
+
 ### Options:
 
 Options are located in the `package.json` for your project.  The default lcov path is the same as the istanbul default output path.
