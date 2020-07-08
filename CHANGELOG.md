@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.2.0]:
+ ### Changed
+   - strip package.json container path from all paths in diff/lcov
+   - option stripRoot is a string or array to override
+
 ## [1.1.3]:
  ### Fixed
    - reports more than 1 file correctly

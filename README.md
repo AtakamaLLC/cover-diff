@@ -43,6 +43,7 @@ Options are located in the `package.json` for your project.  The default lcov pa
     "functions" : 100,
     "lcovFile" : "coverage/lcov.info",
     "diffFile" : \<stdin\>,
+    "stripRoot" : [<project-home-dir>],
 }
 ```
 

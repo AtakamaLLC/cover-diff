@@ -27,7 +27,7 @@ const SECTIONS = ["lines", "branches", "functions"]
 
 class CoverDiff {
     constructor() {
-        this.defaultOpts = {lcovFile: "coverage/lcov.info", diffFile: null, fixPathSep: process.platform == "win32"}
+        this.defaultOpts = {lcovFile: "coverage/lcov.info", diffFile: null, fixPathSep: process.platform === "win32"}
     }
     
     normalPath(filePath, opts) {
@@ -38,8 +38,25 @@ class CoverDiff {
         return filePath
     }
 
+    stripPath(filePath, opts) {
+        let stripRoot = opts.stripRoot
+        if (!Array.isArray(stripRoot)) {
+            stripRoot = stripRoot ? [stripRoot] : []
+        }
+       
+        for (let strip of stripRoot) {
+            const newPath = path.relative(strip, filePath)
+            if (newPath.slice(0,2) === "..")
+                continue
+            filePath = newPath
+        }
+        filePath = this.normalPath(filePath, opts)
+        console.error(filePath)
+        return filePath
+     }
+
     summarizeCov(lcov) {
-        let summary = SECTIONS.reduce((a,b)=>(a[b]={hit:0, found:0},a),{})
+        let summary = SECTIONS.reduce((a,b)=>(a[b]={hit:0, found:0}, a),{})     // eslint-disable-line no-sequences
         for (const ent of lcov) {
             for (const sec of SECTIONS) {
                 if (ent[sec]) {
@@ -91,7 +108,8 @@ class CoverDiff {
         if (!fil) return {}
         const pkg = JSON.parse(await readFile(fil))
         const opts = pkg["@atakama/cover-diff"] || {}
-        return {...this.defaultOpts, ...opts}
+        const stripRoot = path.dirname(fil)
+        return {stripRoot, ...this.defaultOpts, ...opts}
     }
 
     async getDiff(opts) {
@@ -156,7 +174,7 @@ class CoverDiff {
         const dmap = this.diffMap(diffs, opts)
         let newCov = []
         for (const ent of lcov) {
-            diffs = dmap[this.normalPath(ent.file, opts)]
+            diffs = dmap[this.stripPath(ent.file, opts)]
             if (!diffs) continue
             let newDeets
             for (const section of SECTIONS) {

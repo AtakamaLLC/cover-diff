@@ -3,9 +3,11 @@
 
 
 "@atakama/qtest@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@atakama/qtest/-/qtest-1.6.0.tgz#37538f47a3a5b01fd3350e92d0de6b3bd588781b"
-  integrity sha512-esVD8tMVpamYSuX5Txfa2cnfbrWkx20Mjb1d+u2auyDXelpGwSRBUgs6v1aQQrDE1FaN0ZrmPhPzn2PCkETErg==
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@atakama/qtest/-/qtest-1.6.3.tgz#22b6ee24bc50fb116e44ecc0a451a37f1fd53a53"
+  integrity sha512-ezZDa5u4HtZcpj0xUI/D4nipv/uC3MmXhcDVRcnRGK2HoJNveU1qm4dGs+HGvwiYyWG1P0fB2uQcpnSfGdT8Qg==
+  dependencies:
+    findup "^0.1.5"
 
 "@babel/code-frame@^7.0.0":
   version "7.10.4"
@@ -153,6 +155,16 @@ color-name@~1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.4.tgz#c2a09a87acbde69543de6f63fa3995c826c536a2"
   integrity sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==
+
+colors@~0.6.0-1:
+  version "0.6.2"
+  resolved "https://artifacts.vidaprivacy.io/repository/AtakamaGNPM/colors/-/colors-0.6.2.tgz#2423fe6678ac0c5dae8852e5d0e5be08c997abcc"
+  integrity sha1-JCP+ZnisDF2uiFLl0OW+CMmXq8w=
+
+commander@~2.1.0:
+  version "2.1.0"
+  resolved "https://artifacts.vidaprivacy.io/repository/AtakamaGNPM/commander/-/commander-2.1.0.tgz#d121bbae860d9992a3d517ba96f56588e47c6781"
+  integrity sha1-0SG7roYNmZKj1Re6lvVliOR8Z4E=
 
 concat-map@0.0.1:
   version "0.0.1"
@@ -338,6 +350,14 @@ find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+findup@^0.1.5:
+  version "0.1.5"
+  resolved "https://artifacts.vidaprivacy.io/repository/AtakamaGNPM/findup/-/findup-0.1.5.tgz#8ad929a3393bac627957a7e5de4623b06b0e2ceb"
+  integrity sha1-itkpozk7rGJ5V6fl3kYjsGsOLOs=
+  dependencies:
+    colors "~0.6.0-1"
+    commander "~2.1.0"
 
 flat-cache@^2.0.1:
   version "2.0.1"
