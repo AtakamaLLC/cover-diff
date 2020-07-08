@@ -51,7 +51,6 @@ class CoverDiff {
             filePath = newPath
         }
         filePath = this.normalPath(filePath, opts)
-        console.error(filePath)
         return filePath
      }
 
@@ -122,7 +121,7 @@ class CoverDiff {
         try {
             return await parseLcov(opts.lcovFile)
         } catch (e) {
-            console.error("#CD: coverage parser failed")
+            console.error("# cover-diff: coverage parser failed")
             throw(e)
         }
     }
