@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.1]:
+ ### Fixed
+   - branch summary correct
+
 ## [1.2.0]:
  ### Changed
    - strip package.json container path from all paths in diff/lcov

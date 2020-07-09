@@ -182,7 +182,7 @@ class CoverDiff {
                 for (const deet of ent[section].details) {
                     if (diffs.isIn(deet.line)) {
                         newDeets.push(deet)
-                        if (deet.hit) {
+                        if (deet.hit || deet.taken > 0) {
                             hits += 1
                         }
                         tots += 1
