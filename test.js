@@ -113,5 +113,15 @@ cli('err', async () => {
     }
 })
 
+cli('ok', async () => {
+    const cp = require('child_process');
+    const diffs = await util.promisify(fs.readFile)("./non-diffs", "utf-8")
+    let stdout = cp.execFileSync(process.execPath, ['../cli.js'], {
+          input: diffs 
+    })
+    assert.equal(stdout, "end_of_record\n")
+})
+
+
 
 test.run()

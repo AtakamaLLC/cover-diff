@@ -90,6 +90,7 @@ class CoverDiff {
             if (!diffs.length) {
                 console.error("# cover-diff: invalid/empty diff")
                 process.exitCode = 1 
+                return
             }
             const lcov = await this.getLcov(opts)
             const newCov = this.trimLcov(diffs, lcov, opts)
@@ -164,6 +165,9 @@ class CoverDiff {
             }
             print("FNF:", ent.lines.found)
             print("FNH:", ent.lines.hit)
+            print("end_of_record")
+        }
+        if (lcov.length === 0) {
             print("end_of_record")
         }
         return out

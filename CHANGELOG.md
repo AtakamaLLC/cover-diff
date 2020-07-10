@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2]:
+ ### Changed
+   - valid empty lcov
+
 ## [1.2.1]:
  ### Fixed
    - branch summary correct
