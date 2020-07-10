@@ -47,4 +47,10 @@ Options are located in the `package.json` for your project.  The default lcov pa
 }
 ```
 
+
+### Notes:
+
+- Empty or invali diff : exit with an error, no stdout.
+- Valid diff, but no lines in the diff match: no error exit, no stdout
+
 ### [Changelog](./CHANGELOG.md)
