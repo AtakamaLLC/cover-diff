@@ -1,0 +1,23 @@
+diff --git a/.eslintrc b/.eslintrc
+index 31eff3d..79dc8cd 100644
+--- a/.eslintrc
++++ b/.eslintrc
+@@ -18 +18 @@
+-        "files": [ "tests/*.js" ],
++        "files": [ "__tests__/*.js" ],
+diff --git a/.gitlab-ci.yml b/.gitlab-ci.yml
+index b143d9e..83df435 100644
+--- a/.gitlab-ci.yml
++++ b/.gitlab-ci.yml
+@@ -5,4 +5,4 @@ stages:
+-include:
+-  - project: 'vidaid/Build-Tools'
+-    ref: master
+-    file: sonarscan.yml
++# include:
++#  - project: 'vidaid/Build-Tools'
++#    ref: master
++#    file: sonarscan.yml
+@@ -29 +29 @@ test:ubuntu:
+-      - "diff.report"
++      - "diff-report.html"

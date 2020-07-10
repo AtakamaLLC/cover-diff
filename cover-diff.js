@@ -167,9 +167,6 @@ class CoverDiff {
             print("FNH:", ent.lines.hit)
             print("end_of_record")
         }
-        if (lcov.length === 0) {
-            print("end_of_record")
-        }
         return out
     }
 

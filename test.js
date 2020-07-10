@@ -119,7 +119,7 @@ cli('ok', async () => {
     let stdout = cp.execFileSync(process.execPath, ['../cli.js'], {
           input: diffs 
     })
-    assert.equal(stdout, "end_of_record\n")
+    assert.equal(stdout, "")
 })
 
 

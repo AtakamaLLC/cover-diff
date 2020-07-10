@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.3]:
+ ### Changed
+   - genhtml doesn't deal with things well, make it easy to detect a valid empty lcov
+
 ## [1.2.2]:
  ### Changed
    - valid empty lcov
